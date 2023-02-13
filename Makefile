@@ -3,9 +3,9 @@ CC = g++
 
 CFLAGS = -Wall -g
 
-LIBS = 
+LIBS = -lsfml-window -lsfml-graphics -lsfml-system
 
-SRCS = main.cpp
+SRCS = main.cpp simulation.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

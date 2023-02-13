@@ -1,13 +1,9 @@
 #include <iostream>
-#include <queue>
-#include <vector>
 #include <fstream>
-#include <map>
-#include <cassert>
-#include "Node.hpp"
+#include "simulation.h"
 
 
-const std::string characters = "1234567890abcdefghijklmnopqrstuvwxyz"\
+/*const std::string characters = "1234567890abcdefghijklmnopqrstuvwxyz"\
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ =+-_,.<>[]{}!@#$%^&*()~?";
 
 std::map<char, std::string> codes;
@@ -26,7 +22,6 @@ class compare {
 std::vector<std::pair<char, int>> findCharFrequency(std::string& text) {
 		std::vector<std::pair<char, int>> charFrequency;
 
-
 		for(size_t i = 0; i < characters.length(); i++) {
 				int count = 0;
 				for(size_t k = 0; k < text.length(); k++) {
@@ -39,10 +34,10 @@ std::vector<std::pair<char, int>> findCharFrequency(std::string& text) {
 				}
 		}
 
-		/*
+		
 		for(std::pair<char, int> n : charFrequency){
 				std::cout << n.first << ": " << n.second << std::endl;
-		}*/
+		}
 
 		return charFrequency;
 } 
@@ -101,7 +96,7 @@ std::string decompress(Node* root, std::string& compressedText) {
 		return decompressedText;
 }
 
-void findBinaryCode(Node* root, std::string code){
+void findBinaryCode(Node* root, std::string code) {
 		if(!root) {
 				return;
 		}
@@ -111,26 +106,29 @@ void findBinaryCode(Node* root, std::string code){
 		}
 		findBinaryCode(root->left, code + "0");
 		findBinaryCode(root->right, code + "1");
-}
+}*/
 
 int main() {
 	
 		// Get the text to compress from text file
 		std::string line;
 		std::string text;
+		std::string textForDisplay;
 		std::fstream file;
 		file.open("input.txt", std::ios::in);
 		assert(file);
 		
 		while(std::getline(file, line)) {
 				text += line;
+				textForDisplay += line;
+				textForDisplay += "\n";
 		}
 		file.close();
 
-		std::cout << "\n---------- Initial Text -----------" << std::endl;
-		std::cout << text << std::endl;
+		// std::cout << "\n---------- Initial Text -----------" << std::endl;
+		// std::cout << text << std::endl;
 		
-		// Find character and corresponding frequencies
+		/*// Find character and corresponding frequencies
 		std::vector<std::pair<char, int>> characterFrequencies =  findCharFrequency(text);
 
 		// Create a min heap
@@ -150,5 +148,11 @@ int main() {
 		// Decompress
 		std::cout << "\n---------- Decompressed Text ----------" << std::endl;
 		std::string decompressedText = decompress(root, compressedText);
-		std::cout << decompressedText << std::endl;
+		std::cout << decompressedText << std::endl;*/
+
+		simulation sim = simulation(text, textForDisplay);
+
+		while(sim.isOpen()) {
+				sim.run();
+		}
 }
