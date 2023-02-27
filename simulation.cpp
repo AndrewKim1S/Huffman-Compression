@@ -12,20 +12,36 @@ simulation::simulation(std::string text, std::string textForDisplay) {
 		view = window->getDefaultView();
 		zoom = 1;
 		dragging = false;
+		binaryCodeString = "";
 		state = State::START;
+		
 		font = sf::Font();
 		font.loadFromFile("util/PlatNomor-eZ2dm.otf");
+		
 		userText = sf::Text();
 		userText.setFont(font);
 		userText.setString(textForDisplay);
 		userText.setFillColor(sf::Color::White);
 		userText.setCharacterSize(15);
 		userText.setPosition(sf::Vector2f(width/20, length/20));
+		
 		charFrequencyText = sf::Text();
 		charFrequencyText.setFont(font);
 		charFrequencyText.setFillColor(sf::Color::White);
 		charFrequencyText.setCharacterSize(15);
-		charFrequencyText.setPosition(sf::Vector2f(width/2, length/20));
+		charFrequencyText.setPosition(sf::Vector2f(width/2.2, length/20));
+		
+		binaryCodeText = sf::Text();
+		binaryCodeText.setFont(font);
+		binaryCodeText.setFillColor(sf::Color::White);
+		binaryCodeText.setCharacterSize(15);
+		binaryCodeText.setPosition(sf::Vector2f(width/1.9, length/20));
+
+		compressText = sf::Text();
+		compressText.setFont(font);
+		compressText.setFillColor(sf::Color::White);
+		compressText.setCharacterSize(15);
+		compressText.setPosition(sf::Vector2f(width/1.62, length/20));
 }
 
 simulation::~simulation() {
@@ -109,6 +125,7 @@ void simulation::next() {
 				case State::BUILDTREE:
 						state = State::BINARYCODES;
 						findBinaryCode(queue.top(), "");
+						binaryCodeText.setString(binaryCodeString);
 						std::cout << "Binary Codes" << std::endl;
 						break;
 				case State::BINARYCODES:
@@ -131,6 +148,8 @@ void simulation::render() {
 		window->clear(sf::Color(32, 32, 32));
 		window->draw(userText);
 		window->draw(charFrequencyText);
+		window->draw(binaryCodeText);
+		window->draw(compressText);
 		window->display();
 }
 
@@ -155,7 +174,6 @@ simulation::findCharFrequency(std::string& text) {
 						charFrequencyString += std::string(1,characters[i]) + ": " + std::to_string(count) + "\n";
 				}
 		}
-		std::cout << charFrequencyString << std::endl;
 		charFrequencyText.setString(charFrequencyString);
 		characterFrequencies = charFrequency;
 		return charFrequency;
@@ -193,11 +211,23 @@ simulation::buildTree(std::vector<std::pair<char, int>>& characterFrequencies, s
 
 std::string simulation::compress(std::string& text) {
 		std::string compressed = "";
-
+		std::string forDisplay = "";
+		size_t count = 0;
+	
+		size_t t = 0;
 		for(size_t i = 0; i < text.length(); i++) {
 				compressed += codes[text[i]];
+				
+				t += codes[text[i]].length();
+				forDisplay += codes[text[i]];
+				
+				if((t / 80) > count) {
+						count ++;
+						forDisplay += "\n";
+				}
 		}
-		compressedText = compressedText;
+		compressedText = compressed;
+		compressText.setString(forDisplay);
 		return compressedText;
 }
 				
@@ -225,7 +255,7 @@ void simulation::findBinaryCode(Node* root, std::string code) {
 				return;
 		}
 		if(root->character != '/') {
-				// std::cout << root->character << ": " << code << std::endl;
+				binaryCodeString += std::string(1,root->character) + ": "  + code + "\n";
 				codes.insert(std::pair<char,std::string>(root->character, code));
 		}
 		findBinaryCode(root->left, code + "0");

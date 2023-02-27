@@ -58,6 +58,8 @@ class simulation {
 				sf::Font font;
 				sf::Text userText;
 				sf::Text charFrequencyText;
+				sf::Text binaryCodeText;
+				sf::Text compressText;
 				
 				bool dragging;
 				float zoom;
@@ -71,6 +73,7 @@ class simulation {
 				std::map<char, std::string> codes;
 				// text
 				std::string text;
+				std::string binaryCodeString;
 				// character frequencies 
 				std::vector<std::pair<char, int>> characterFrequencies;
 				// create min heap
