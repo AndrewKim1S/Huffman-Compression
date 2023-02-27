@@ -57,6 +57,7 @@ class simulation {
 				sf::Event event;
 				sf::Font font;
 				sf::Text userText;
+				sf::Text charFrequencyText;
 				
 				bool dragging;
 				float zoom;
@@ -69,7 +70,7 @@ class simulation {
 				// codes 
 				std::map<char, std::string> codes;
 				// text
-				std::string text; 
+				std::string text;
 				// character frequencies 
 				std::vector<std::pair<char, int>> characterFrequencies;
 				// create min heap

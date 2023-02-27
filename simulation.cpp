@@ -21,6 +21,11 @@ simulation::simulation(std::string text, std::string textForDisplay) {
 		userText.setFillColor(sf::Color::White);
 		userText.setCharacterSize(15);
 		userText.setPosition(sf::Vector2f(width/20, length/20));
+		charFrequencyText = sf::Text();
+		charFrequencyText.setFont(font);
+		charFrequencyText.setFillColor(sf::Color::White);
+		charFrequencyText.setCharacterSize(15);
+		charFrequencyText.setPosition(sf::Vector2f(width/2, length/20));
 }
 
 simulation::~simulation() {
@@ -125,6 +130,7 @@ void simulation::next() {
 void simulation::render() {
 		window->clear(sf::Color(32, 32, 32));
 		window->draw(userText);
+		window->draw(charFrequencyText);
 		window->display();
 }
 
@@ -135,6 +141,7 @@ bool simulation::isOpen() {
 std::vector<std::pair<char, int>> 
 simulation::findCharFrequency(std::string& text) {
 		std::vector<std::pair<char, int>> charFrequency;
+		std::string charFrequencyString = "";
 
 		for(size_t i = 0; i < characters.length(); i++) {
 				int count = 0;
@@ -145,11 +152,13 @@ simulation::findCharFrequency(std::string& text) {
 				}
 				if(count > 0) {
 						charFrequency.emplace_back(std::pair(characters[i], count));
+						charFrequencyString += std::string(1,characters[i]) + ": " + std::to_string(count) + "\n";
 				}
 		}
+		std::cout << charFrequencyString << std::endl;
+		charFrequencyText.setString(charFrequencyString);
 		characterFrequencies = charFrequency;
 		return charFrequency;
-
 }
 				
 
